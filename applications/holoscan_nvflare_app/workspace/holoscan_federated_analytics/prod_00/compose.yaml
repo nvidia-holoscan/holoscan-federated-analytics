@@ -1,0 +1,69 @@
+services:
+  Holoscan-Device-1:
+    build: nvflare_compose
+    command:
+    - ${PYTHON_EXECUTABLE}
+    - -u
+    - -m
+    - nvflare.private.fed.app.client.client_train
+    - -m
+    - ${WORKSPACE}
+    - -s
+    - fed_client.json
+    - --set
+    - secure_train=true
+    - uid=Holoscan-Device-1
+    - org=nvidia
+    - config_folder=config
+    container_name: Holoscan-Device-1
+    image: ${IMAGE_NAME}
+    volumes:
+    - ./Holoscan-Device-1:${WORKSPACE}
+    - /media/m2/holoscan_data:/media/m2/holoscan_data
+  Holoscan-Device-2:
+    build: nvflare_compose
+    command:
+    - ${PYTHON_EXECUTABLE}
+    - -u
+    - -m
+    - nvflare.private.fed.app.client.client_train
+    - -m
+    - ${WORKSPACE}
+    - -s
+    - fed_client.json
+    - --set
+    - secure_train=true
+    - uid=Holoscan-Device-2
+    - org=nvidia
+    - config_folder=config
+    container_name: Holoscan-Device-2
+    image: ${IMAGE_NAME}
+    volumes:
+    - ./Holoscan-Device-2:${WORKSPACE}
+    - /media/m2/holoscan_data:/media/m2/holoscan_data
+  holoscan.nvflare.server:
+    build: nvflare_compose
+    command:
+    - ${PYTHON_EXECUTABLE}
+    - -u
+    - -m
+    - nvflare.private.fed.app.server.server_train
+    - -m
+    - ${WORKSPACE}
+    - -s
+    - fed_server.json
+    - --set
+    - secure_train=true
+    - config_folder=config
+    - org=nvidia
+    container_name: holoscan.nvflare.server
+    image: ${IMAGE_NAME}
+    ports:
+    - 8002:8002
+    - 8003:8003
+    volumes:
+    - ./holoscan.nvflare.server:${WORKSPACE}
+    - nvflare_svc_persist:/tmp/nvflare/
+    - /media/m2/holoscan_nvflare_data:/media/m2/holoscan_nvflare_data
+volumes:
+  nvflare_svc_persist: null
