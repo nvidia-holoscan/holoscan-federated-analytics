@@ -1,4 +1,4 @@
-# Copyright (c) 2023, NVIDIA CORPORATION.  All rights reserved.
+# Copyright (c) 2024, NVIDIA CORPORATION.  All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,12 +27,7 @@ class HoloscanExampleStatistics(Statistics):
     def __init__(self, data_path):
         super().__init__()
         self.data_root_dir = data_path
-        self.data_path = "data.csv"
         self.data: Optional[Dict[str, pd.DataFrame]] = None
-        self.data_features = [
-            "Input Frame Position",
-            "Confidence Score",
-        ]
         self.skip_rows = {}
 
     def load_data(self, fl_ctx: FLContext) -> Dict[str, pd.DataFrame]:
@@ -49,10 +44,10 @@ class HoloscanExampleStatistics(Statistics):
             # Combine all data frames
             if dfs:
                 combined_df = pd.concat(dfs, ignore_index=True)
+                holoscan_out_of_body_detection_set = combined_df
+                return {"holoscan_set": holoscan_out_of_body_detection_set}
             else:
                 print("No CSV files found in the directory.")
-            holoscan_out_of_body_detection_set = combined_df
-            return {"holoscan_set": holoscan_out_of_body_detection_set}
         except Exception as e:
             raise Exception(f"Load data for client {client_name} failed! {e}")
 
