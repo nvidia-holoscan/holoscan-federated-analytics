@@ -1,0 +1,246 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: Copyright (c) 2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Error out if a command fails
+set -e
+
+# Function to display help message
+function show_help() {
+    echo ""
+    echo "This is a sript for provisioning of NVFLARE clients and users."
+    echo "It currently supports dynamically adding new NVFLARE clients and users to the existing NVFLARE project."
+    echo "This script assumes that the current project startup kits are under workspace/holoscan_federated_analytics/prod_00."
+    echo ""
+    echo "Usage: $0 [options]"
+    echo ""
+    echo "Options:"
+    echo "  -a | --add_clients <client1,client2>  Comma separated list of clients to add."
+    echo "  -u | --add_user <user name>           The name of the user to be added."
+    echo "  -r | --user_role <user role>          The role of the user, can be `project_admin`, `org_admin`, `lead` or `member`. Default is - `member`."
+    echo "  -o | --org <org name>                 The project organization, default - `nvidia`."
+    echo "  -p | --project_file <file name>       The project file, default - `project.yml`."
+    echo "  -w | --workspace <workspace folder>   The folder with any custom script."
+    echo "  -c | --custom_folder <folder name>    The folder with any custom script."
+    echo "  -h, --help                            Show this help message and exit."
+    echo ""
+    echo "Examples:"
+    echo "  $0 -a Holoscan-Device-1"
+    echo "  $0 -a Holoscan-Device-3,Holoscan-Device-4,Holoscan-Device-5"
+    echo "  $0 -u org_admin@nvidia.com -r org_admin"
+    echo "  $0 -a Holoscan-Device-1 -u holo_admin@nvidia.com"
+}
+
+# Function to print log lines in different colors -
+# R(red), G(green), Y(yellow) and B(blue)
+log() {
+    local color=$1
+    local message=$2
+    case $color in
+        R)
+            echo -e "\033[31m$message\033[0m"
+            ;;
+        G)
+            echo -e "\033[32m$message\033[0m"
+            ;;
+        Y)
+            echo -e "\033[33m$message\033[0m"
+            ;;
+        B)
+            echo -e "\033[34m$message\033[0m"
+            ;;
+        *)
+            echo $message
+            ;;
+    esac
+}
+
+# Function to print commands before running
+run_command() {
+    local status=0
+    local cmd="$*"
+
+    log G "${cmd}"
+    echo ""
+    "$@"
+    status=$?
+    return $status
+}
+
+# Set default values
+ORG="nvidia"
+USER_ROLE="member"
+PRODUCTION_FOLDER_NAME="prod_00"
+WORKSPACE_PATH="workspace/holoscan_federated_analytics"
+
+while [ $# -gt 0 ]; do
+  case $1 in
+    -a | --add_clients)
+        shift;
+        if [[ -z "$1" || "$1" == --* || "$1" == -* ]]; then
+            log R "Error: client names list should be provided while passing -a / --add_clients."
+            show_help
+            exit 1
+        else
+            CLIENT_NAMES="$1"
+        fi
+        ;;
+    -u | --add_user)
+        shift;
+        if [[ -z "$1" || "$1" == --* || "$1" == -* ]]; then
+            log R "Error: user name should be provided while passing -u / --add_user."
+            show_help
+            exit 1
+        else
+            USER_NAME="$1"
+        fi
+        ;;
+    -r | --user_role)
+        shift;
+        if [[ -z "$1" || "$1" == --* || "$1" == -* ]]; then
+            log R "Error: user role should be provided while passing -r / --user_role."
+            show_help
+            exit 1
+        else
+            USER_ROLE="$1"
+        fi
+        ;;
+    -o | --org)
+        shift;
+        if [[ -z "$1" || "$1" == --* || "$1" == -* ]]; then
+            log R "Error: please provide org name while specifying -o / --org."
+            show_help
+            exit 1
+        else
+            ORG="$1"
+        fi
+        ;;
+    -p | --project_file)
+        shift;
+        if [[ -z "$1" || "$1" == --* || "$1" == -* ]]; then
+            log R "Error: please provide project file name while specifying -p / --project_file."
+            show_help
+            exit 1
+        else
+            PROJECT_FILE_NAME="$1"
+        fi
+        ;;
+    -w | --workspace)
+        shift;
+        if [[ -z "$1" || "$1" == --* || "$1" == -* ]]; then
+            log R "Error: please provide workspace folder name while specifying -w / --workspace."
+            show_help
+            exit 1
+        else
+            WORKSPACE="$1"
+        fi
+        ;;
+    -h | --help)
+        show_help
+        exit 0
+        ;;
+    *)
+        log R "Error: Invalid option $1"
+        show_help
+        exit 1
+        ;;
+  esac
+  shift
+done
+
+if [ -z "$CLIENT_NAMES" ] && [ -z "$USER_NAME" ]; then
+    log R "Error: either --add_client or --add_user argument should be provided."
+    show_help
+    exit 1
+fi
+
+# Create virtual environment for NVFLARE dynamic provisioning
+echo "Creating virtual environment..."
+run_command python3 -m venv .provision-env
+
+# Activate virtual environment
+echo "Activating virtual environment..."
+run_command source .provision-env/bin/activate
+
+# nvflare install (Version 2.4.1)
+echo "Installing nvflare..."
+run_command pip3 install nvflare==2.4.1 1>/dev/null 2>/dev/null
+
+nvflare_args=""
+if [ -n "$PROJECT_FILE_NAME" ]; then
+    nvflare_args+=" -p $PROJECT_FILE_NAME"
+fi
+if [ -n "$WORKSPACE" ]; then
+    nvflare_args+=" -w $WORKSPACE"
+fi
+
+# Add NVFLARE client
+if [ -n "$CLIENT_NAMES" ]; then
+    # Parse and process the comma-separated list of clients
+    IFS=',' read -r -a client_list <<< "$CLIENT_NAMES"
+    echo "CLIENT_NAMES: $CLIENT_NAMES client_list: ${client_list[@]}"
+
+    for client in ${client_list[@]}; do
+        echo "Provisioning client $client..."
+
+        # Create yml file for the client
+        echo -e "name: $client\norg: $ORG" > "$client.yml"
+
+        run_command nvflare provision $args_to_pass --add_client "$client.yml"
+        echo "Added client $client..."
+        rm -rf "$client.yml"
+        # Move newly created client folder to the existing production folder
+        prod_folder="$WORKSPACE_PATH/$PRODUCTION_FOLDER_NAME"
+        new_prod_folder="$WORKSPACE_PATH/prod_01"
+        run_command mv "$new_prod_folder/$client" "$prod_folder/"
+        run_command rm -rf $new_prod_folder
+        echo "Newly added client $client startup kit can be found at '$prod_folder/$client'."
+    done
+fi
+
+# Add NVFLARE user
+if [ -n "$USER_NAME" ]; then
+    echo "Provisioning user $USER_NAME..."
+    # Create yml file for the client
+    echo -e "name: $USER_NAME\norg: $ORG\nrole: $USER_ROLE" > "$USER_NAME.yml"
+    cat "$USER_NAME.yml"
+    run_command nvflare provision $args_to_pass --add_user "$USER_NAME.yml"
+    echo "Added user $USER_NAME..."
+    rm -rf "$USER_NAME.yml"
+    # Move newly created client folder to the existing production folder
+    prod_folder="$WORKSPACE_PATH/$PRODUCTION_FOLDER_NAME"
+    new_prod_folder="$WORKSPACE_PATH/prod_01"
+    run_command mv "$new_prod_folder/$USER_NAME" "$prod_folder/"
+    run_command rm -rf $new_prod_folder
+    # Copy `submit_job.py` from existing user to new user directory
+    admin_folder="$prod_folder/holoscan_admin@nvidia.com"
+    echo $admin_folder
+    admin_script="$admin_folder/submit_job.py"
+    echo $admin_script
+    job_name="holoscan_fl_example"
+    run_command cp "$admin_script" "$prod_folder/$USER_NAME"
+    run_command cp -r "$admin_folder/transfer/$job_name" "$prod_folder/$USER_NAME/transfer/"
+    echo "Newly added user $USER_NAME startup kit can be found at '$prod_folder/$USER_NAME'."
+fi
+
+# Deactivate python virtual environment
+echo "Deactivating virtual environment..."
+run_command deactivate
+
+# Cleanup python virtual environment
+echo "Cleaning up python environment..."
+run_command rm -rf .provision-env
+
+echo "NVFLARE provisioning done!"

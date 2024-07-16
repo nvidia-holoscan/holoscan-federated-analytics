@@ -181,7 +181,7 @@ Follow below steps to build and run all the Server, clients and admin containers
     ./dev_container run --admin holoscan_admin@nvidia.com
 
     # 11. Once inside the admin container, submit the Holoscan federated analytics job to get global statistics.
-    python3 ./submit_job.py .
+    python3 ./submit_job.py
 
     # Once the job is finished, all the containers can be exited.
     # The global statistics output will be available in the specified output directory (`/media/m2/output/`).
@@ -268,7 +268,7 @@ Follow below steps to run the distributed application:
     # Steps to be followed on IGX 1
 
     # 1. Switch to the admin container terminal and submit the Holoscan federated analytics job inside the admin container to get the global statistics.
-    python3 ./submit_job.py .
+    python3 ./submit_job.py
 
     # Once the job is finished, all the containers can be exited.
     # The global statistics output will be available in the specified output directory (`/media/m2/output/`) on IGX 1 as the server is running on IGX 1.
@@ -276,3 +276,30 @@ Follow below steps to run the distributed application:
 ```
 
 Similarly, other distributed configurations can be tried out, for example - running both the clients on IGX 1 and running NVFLARE Server and Admin on IGX 2.
+
+## Dynamic Provisioning of NVFLARE Clients and Users
+
+The above NVFLARE application is currently configured to have two clients and one user. The NVFLARE dynamic provisioning allows adding more clients and users dynamically to the existing project. The script `nvflare_provision` is provided to add more clients and users.
+
+### Adding new clients
+
+Example command to add two more clients named `Holoscan-Device-3` and `Holoscan-Device-4` to the existing setup:
+
+```bash
+    ./nvflare_provision -a Holoscan-Device-3,Holoscan-Device-4
+```
+
+Along with the existing clients, new clients can also be run on a single node or distributed setup by following the steps mentioned in the above section to run the NVFLARE clients.
+For example, below command will start dev container for the client `Holoscan-Device-3` and once inside the container, the client can be started using `./start.sh` command.
+
+```bash
+    ./dev_container run --client Holoscan-Device-3 --data /media/m2/holoscan_data
+```
+
+### Adding new clients
+
+Below is the example command to add one more user named `org_admin@nvidia.com` with role `org_admin` to the existing setup.
+
+```bash
+    ./nvflare_provision -u org_admin@nvidia.com -r org_admin
+```

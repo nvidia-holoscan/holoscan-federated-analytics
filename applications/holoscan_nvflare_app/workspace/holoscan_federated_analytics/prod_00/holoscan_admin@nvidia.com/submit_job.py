@@ -18,10 +18,11 @@ import os
 from nvflare.fuel.flare_api.flare_api import new_secure_session
 
 parser = argparse.ArgumentParser(description="Submit a given job to the NVFlare server.")
-parser.add_argument("admin_folder", type=str, help="The path to the admin folder.")
+parser.add_argument("--folder", type=str, default=".", help="The path to the admin folder.")
+parser.add_argument("--user", type=str, default="holoscan_admin@nvidia.com", help="The user name")
 args = parser.parse_args()
-admin_folder = args.admin_folder
-admin_user = "holoscan_admin@nvidia.com"
+admin_folder = args.folder
+admin_user = args.user
 job_name = "holoscan_fl_example"
 
 if not os.path.isabs(admin_folder):

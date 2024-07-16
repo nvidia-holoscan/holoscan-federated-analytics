@@ -43,7 +43,7 @@ function show_help() {
     echo "  $0 build"
     echo "  $0 run --client my_client --data <data_folder_path>"
     echo "  $0 run --server my_server --data <data_folder_path>"
-    echo "  $0 run --admmin my_admin"
+    echo "  $0 run --admin my_admin"
 }
 
 # Function to print log lines in different colors -
