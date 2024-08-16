@@ -1,0 +1,11 @@
+# Requirements for NVFLARE app
+-r ./applications/holoscan_nvflare_app/docker/requirements.txt
+
+# Requirements for REST API service
+-r ./visualization/backend/requirements.txt
+
+# Development packages
+isort
+black
+ruff
+codespell
