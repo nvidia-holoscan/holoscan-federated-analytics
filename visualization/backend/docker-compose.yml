@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: analytics-backend
+    env_file:
+      - ./app/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /media/m2/output/:/media/m2/output/
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
