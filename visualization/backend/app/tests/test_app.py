@@ -238,3 +238,73 @@ async def test_get_stats(mock_output_data_directory):
         assert response.status_code == 200
         expected_response_stats_json = '{"Global": {"count": {"holoscan_set": {"feature1": 6000, "feature2": 8000}}}}'
         assert response.json() == expected_response_stats_json
+
+
+@pytest.mark.parametrize(
+    "mock_output_data_directory",
+    ["app.api.v1.endpoints.get_range_stats.Path"],
+    indirect=True,
+)
+@pytest.mark.asyncio
+async def test_get_range_stats(mock_output_data_directory):
+    output_dir = mock_output_data_directory
+    assert output_dir.exists()
+
+    test_token = create_token()
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        # Test unauthorized access to a protected route
+        test_route = f"{settings.API_V1_STR}/get_range_stats/app1/20240812_232249/20240813_232249/"
+        response = await ac.get(test_route)
+        assert response.status_code == 401
+
+        # Test range stats, should return accumulated stats for the given dates ranges
+        test_route = f"{settings.API_V1_STR}/get_range_stats/app1/20240812_232249/20240813_232249/"
+        response = await ac.get(
+            test_route, headers={"Authorization": f"Bearer {test_token}"}
+        )
+        assert response.status_code == 200
+        expected_response_stats_json = {
+            "Global": {
+                "count": {"holoscan_set": {"feature1": 18000, "feature2": 24000}}
+            }
+        }
+        assert response.json() == expected_response_stats_json
+
+        # Test another range, should return accumulated stats for the given dates ranges
+        test_route = f"{settings.API_V1_STR}/get_range_stats/app1/20240813_202249/20240813_232249/"
+        response = await ac.get(
+            test_route, headers={"Authorization": f"Bearer {test_token}"}
+        )
+        assert response.status_code == 200
+        expected_response_stats_json = {
+            "Global": {
+                "count": {"holoscan_set": {"feature1": 11000, "feature2": 15000}}
+            }
+        }
+        assert response.json() == expected_response_stats_json
+
+        # Specifying the same start and end timestamps should return stats for the given timestamp
+        test_route = f"{settings.API_V1_STR}/get_range_stats/app1/20240813_202249/20240813_202249/"
+        response = await ac.get(
+            test_route, headers={"Authorization": f"Bearer {test_token}"}
+        )
+        assert response.status_code == 200
+        expected_response_stats_json = {
+            "Global": {"count": {"holoscan_set": {"feature1": 6000, "feature2": 8000}}}
+        }
+        assert response.json() == expected_response_stats_json
+
+        # Providing any random timestamps and not just from the available timestamps should also work
+        test_route = f"{settings.API_V1_STR}/get_range_stats/app1/20230101_000000/20241231_000000/"
+        response = await ac.get(
+            test_route, headers={"Authorization": f"Bearer {test_token}"}
+        )
+        assert response.status_code == 200
+        expected_response_stats_json = {
+            "Global": {
+                "count": {"holoscan_set": {"feature1": 18000, "feature2": 24000}}
+            }
+        }
+        assert response.json() == expected_response_stats_json

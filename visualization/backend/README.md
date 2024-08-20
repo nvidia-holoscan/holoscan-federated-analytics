@@ -64,14 +64,20 @@ The REST API service can be evaluated using the `curl` utility. Follow the instr
 
     Example command below to get the latest available statistics for the application named `out_of_body_detection`
     ```bash
-        curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8000/api/v1/get_stats/out_of_body_detection/?timestamp=20240716_153507
+        curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8000/api/v1/get_stats_list/out_of_body_detection/
     ```
 
     And below command would return the statistics for a given date (timestamp) for the application named `out_of_body_detection`
     ```bash
-        curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8000/api/v1/get_stats_list/out_of_body_detection/
+        curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8000/api/v1/get_stats/out_of_body_detection/?timestamp=20240716_153507
    ```
 
+9. Getting the statistics for the date range (API: `/get_range_stats/{app_name}/{start}/{end}/`)
+
+    Below command would return the accumulated statistics for a given date range for the application named `out_of_body_detection`
+    ```bash
+        curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8000/api/v1/get_stats/out_of_body_detection/20240716_153507/20240717_150000/
+   ```
 
 # Unit Testing
 
