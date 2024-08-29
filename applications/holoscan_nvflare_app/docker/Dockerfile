@@ -16,7 +16,7 @@
 # limitations under the License.
 
 ARG PYTHON_VERSION=3.8
-ARG NVFLARE_VERSION=2.4.1
+ARG NVFLARE_VERSION=2.4.2
 
 FROM python:${PYTHON_VERSION}
 
