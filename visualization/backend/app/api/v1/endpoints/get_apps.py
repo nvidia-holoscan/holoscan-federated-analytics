@@ -55,7 +55,6 @@ async def get_apps(dep: None = Depends(validate_user)):
         timestamp: One of the available timestamps for which to return the statistics.
 
     Returns:
-        Returns the statistics JSON for the given application and timestamp.
-        If no timestamp is provided, it returns the latest statistics for the given application.
+        Returns the list of registered applications for Holoscan Federated Analytics.
     """
     return get_subdirectories()

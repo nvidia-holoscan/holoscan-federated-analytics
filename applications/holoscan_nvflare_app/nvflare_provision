@@ -174,9 +174,9 @@ run_command python3 -m venv .provision-env
 echo "Activating virtual environment..."
 run_command source .provision-env/bin/activate
 
-# nvflare install (Version 2.4.1)
+# nvflare install (Version 2.4.2)
 echo "Installing nvflare..."
-run_command pip3 install nvflare==2.4.1 1>/dev/null 2>/dev/null
+run_command pip3 install nvflare==2.4.2 1>/dev/null 2>/dev/null
 
 nvflare_args=""
 if [ -n "$PROJECT_FILE_NAME" ]; then
