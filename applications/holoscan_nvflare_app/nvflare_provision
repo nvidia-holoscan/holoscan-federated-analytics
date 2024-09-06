@@ -20,7 +20,7 @@ set -e
 # Function to display help message
 function show_help() {
     echo ""
-    echo "This is a sript for provisioning of NVFLARE clients and users."
+    echo "This is a script for provisioning of NVFLARE clients and users."
     echo "It currently supports dynamically adding new NVFLARE clients and users to the existing NVFLARE project."
     echo "This script assumes that the current project startup kits are under workspace/holoscan_federated_analytics/prod_00."
     echo ""
