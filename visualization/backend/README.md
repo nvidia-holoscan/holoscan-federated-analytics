@@ -36,7 +36,7 @@ The REST API service can be evaluated using the `curl` utility. Follow the instr
 
     ```bash
         cd <src_root>/visualization/backend/
-        pip3 -m venv .venv
+        python3 -m venv .venv
         source .venv/bin/activate
         pip3 install -r requirements.txt
         TOKEN=`python3 ./create_test_token.py`
