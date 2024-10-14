@@ -3,7 +3,7 @@
   "workflows": [
     {
       "id": "fed_stats_controller",
-      "path": "hierarchical_statistics_controller.HierarchicalStatisticsController",
+      "path": "nvflare.app_common.workflows.hierarchical_statistics_controller.HierarchicalStatisticsController",
       "args": {
         "statistic_configs": {
           "count": {},
