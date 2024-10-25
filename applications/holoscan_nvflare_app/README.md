@@ -157,10 +157,10 @@ Follow below steps to build and run all the Server, clients and admin containers
     <machine IP>   holoscan.nvflare.server
 
     # 3. Create a directory to store NVFLARE output, below is one example path
-    mkdir /media/m2/output/
+    mkdir -p /media/m2/output/<application_name, e.g., out_of_body_detection>
 
     # 4. Run NVFLARE server container in first terminal as below
-    ./dev_container run --server holoscan.nvflare.server --data /media/m2/output/
+    ./dev_container run --server holoscan.nvflare.server --data /media/m2/output/<application_name, e.g., out_of_body_detection>
 
     # 5. Once inside the container, start the NVFLARE server
     ./start.sh
@@ -184,7 +184,7 @@ Follow below steps to build and run all the Server, clients and admin containers
     python3 ./submit_job.py
 
     # Once the job is finished, all the containers can be exited.
-    # The global statistics output will be available in the specified output directory (`/media/m2/output/`).
+    # The global statistics output will be available in the specified output directory (`/media/m2/output/<application_name, e.g., out_of_body_detection>`).
     # On each run, the directory with the current timestamp will be created and global statistics JSON file will be created inside it.
 
 ```
@@ -224,10 +224,10 @@ Follow below steps to run the distributed application:
     <IGX1 IP>   holoscan.nvflare.server
 
     # 3. Create a directory to store NVFLARE output, below is one example path
-    mkdir /media/m2/output/
+    mkdir -p /media/m2/output/<application_name, e.g., out_of_body_detection>
 
     # 4. Run NVFLARE server container in first terminal as below
-    ./dev_container run --server holoscan.nvflare.server --data /media/m2/output/
+    ./dev_container run --server holoscan.nvflare.server --data /media/m2/output/<application_name, e.g., out_of_body_detection>
 
     # 5. Once inside the container, start the NVFLARE server
     ./start.sh
@@ -271,7 +271,7 @@ Follow below steps to run the distributed application:
     python3 ./submit_job.py
 
     # Once the job is finished, all the containers can be exited.
-    # The global statistics output will be available in the specified output directory (`/media/m2/output/`) on IGX 1 as the server is running on IGX 1.
+    # The global statistics output will be available in the specified output directory (`/media/m2/output/<application_name, e.g., out_of_body_detection>`) on IGX 1 as the server is running on IGX 1.
     # On each run, the directory with the current timestamp will be created and a global statistics JSON file will be created inside it.
 ```
 
