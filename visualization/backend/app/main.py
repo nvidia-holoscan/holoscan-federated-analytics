@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1 import api_router
 from app.core.config import settings
@@ -22,6 +23,20 @@ app = FastAPI(
     description="This is a REST API Service using FastAPI for Holoscan Federated Analytics Visualization",
     version="1.0.0",
 )
+
+# Define origins that are allowed to access this API
+origins = [
+    "*",  # Allow all origins (not recommended for production)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Origins that are allowed
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, PUT, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
