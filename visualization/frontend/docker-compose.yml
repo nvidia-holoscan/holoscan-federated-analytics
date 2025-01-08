@@ -21,6 +21,4 @@ services:
     environment:
       NODE_ENV: production
       PORT: 8888
-    volumes:
-      - ./analytics-dashboard:/app
     command: pnpm run start
