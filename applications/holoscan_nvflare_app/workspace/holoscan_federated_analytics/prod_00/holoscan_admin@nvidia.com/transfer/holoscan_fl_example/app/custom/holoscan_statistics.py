@@ -69,6 +69,9 @@ class HoloscanExampleStatistics(Statistics):
 
     def count(self, dataset_name: str, feature_name: str) -> int:
         df: pd.DataFrame = self.data[dataset_name]
+        is_binary = set(df[feature_name].unique()).issubset({0, 1})
+        if is_binary:
+            return (df[feature_name]).sum()
         return df[feature_name].count()
 
     def sum(self, dataset_name: str, feature_name: str) -> float:
