@@ -8,11 +8,11 @@ First run the Analytics backend as per the instructions provided in `holoscan-fe
 
 Run the analytics dashboard with the following command:
 ```bash
-cd visualization/frontend/analytics-dashboard
+cd visualization/frontend/
 
-# modify `NEXT_PUBLIC_ROOT_URI` variable in the `.env` file to point to the IP where analytics backend is running.
+# modify `NEXT_PUBLIC_ROOT_URI` variable in the `analytics-dashboard/.env` file to point to the IP where analytics backend is running.
 
-# Modify `NEXT_PUBLIC_AUTHPORIZATION_HEADER` variable in the `.env` file to point to the newly created test JWT token as per the steps mentioned in `holoscan-federated-analytics/visualization/backend/README.md`.
+# Modify `NEXT_PUBLIC_AUTHPORIZATION_HEADER` variable in the `analytics-dashboard/.env` file to point to the newly created test JWT token as per the steps mentioned in `holoscan-federated-analytics/visualization/backend/README.md`.
 
 # Build the frontend docker container
 docker compose build
