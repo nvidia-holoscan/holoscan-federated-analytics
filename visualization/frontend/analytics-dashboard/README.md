@@ -1,36 +1,34 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+This is the project for Holoscan Federated Analytics Dashboard.
+
 ## Getting Started
 
-First, run the development server:
+First run the Analytics backend as per the instructions provided in `holoscan-federated-analytics/visualization/backend/README.md`. This provides a necessary rest API service required for the analytics dashboard frontend.
 
+Run the analytics dashboard with the following command:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd visualization/frontend/analytics-dashboard
+
+# modify `NEXT_PUBLIC_ROOT_URI` variable in the `.env` file to point to the IP where analytics backend is running.
+
+# Modify `NEXT_PUBLIC_AUTHPORIZATION_HEADER` variable in the `.env` file to point to the newly created test JWT token as per the steps mentioned in `holoscan-federated-analytics/visualization/backend/README.md`.
+
+# Build the frontend docker container
+docker compose build
+
+# Run the frontend container - it will start webserver on the local host and port 8888.
+docker compose run
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://ip:8888](http://ip:8888) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Dashboard currently supports:
+- A page listing all the analytics enabled applications.
+- Statistics page supports:
+  - Visualization of global latest statistics.
+  - Visualization of datewise statistics.
+  - Visualization of accumulated statistics for the range of dates.
+  - Visualization of latest and datewise statistics for a particular hirrarchical level.
+  - Visualization of histogram for a particular feature.
+- An about page with the high level details of Holoscan Federated Analytics.
