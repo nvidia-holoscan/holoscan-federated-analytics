@@ -53,9 +53,9 @@ export default function AppCard({ title }: AppCardProps) {
     return <Card
         slotContent={<Flex justify="center"><h4 style={{textAlign: 'center', color: "white"}}>{AppNames.get(title)}</h4></Flex>}
         slotMedia={iconName ? 
-            <Image width="200" height="200" src={`/images/${iconName}`} alt={title} >
+            <Image width="200" height="150" src={`/images/${iconName}`} alt={title} >
             </Image> : 
-            <NvidiaMarketingIcon iconName="holoscan"  width="112px" height="112px"/>
+            <NvidiaMarketingIcon iconName="holoscan"  width="200px" height="150px"/>
           }
         onClick={() => handleClick(title)}
         id={title}
