@@ -25,15 +25,21 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy package.json, pnpm-lock.yaml, and .npmrc (if available)
-COPY analytics-dashboard/package.json analytics-dashboard/package-lock.json analytics-dashboard/pnpm-lock.yaml ./
-# COPY analytics-dashboard/.npmrc analytics-dashboard/.npmrc
+COPY package.json package-lock.json pnpm-lock.yaml ./
+# COPY .npmrc .npmrc
 
 # Install dependencies using pnpm
 RUN pnpm install
 
 # Copy the rest of the application code to the container
-COPY analytics-dashboard/src ./src
-COPY analytics-dashboard/next.config.mjs ./next.config.mjs
+COPY src ./src
+COPY next.config.mjs ./next.config.mjs
+
+# Handle build-time arguments
+ARG NEXT_PUBLIC_AUTHPORIZATION_HEADER
+ENV NEXT_PUBLIC_AUTHPORIZATION_HEADER=$NEXT_PUBLIC_AUTHPORIZATION_HEADER
+ARG NEXT_PUBLIC_ROOT_URI
+ENV NEXT_PUBLIC_ROOT_URI=$NEXT_PUBLIC_ROOT_URI
 
 # Build the Next.js app
 RUN pnpm run build
@@ -51,12 +57,12 @@ WORKDIR /app
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+# Copy the public folder into the /app directory
+COPY public /app/public
 
 # Expose the port Next.js will run on
 ENV PORT 8888
 EXPOSE 8888
-
-RUN ls -al /app/ 
 
 # Start the Next.js application in production mode
 CMD ["pnpm", "run", "start"]

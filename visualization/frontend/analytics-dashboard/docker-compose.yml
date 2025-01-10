@@ -14,11 +14,18 @@
 
 services:
   nextjs:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_AUTHPORIZATION_HEADER: ${NEXT_PUBLIC_AUTHPORIZATION_HEADER}
+        NEXT_PUBLIC_ROOT_URI: ${NEXT_PUBLIC_ROOT_URI}
     container_name: analytics-dashboard
     ports:
       - "8888:8888"
     environment:
       NODE_ENV: production
       PORT: 8888
+      NEXT_PUBLIC_AUTHPORIZATION_HEADER: ${NEXT_PUBLIC_AUTHPORIZATION_HEADER}
+      NEXT_PUBLIC_ROOT_URI: ${NEXT_PUBLIC_ROOT_URI}
     command: pnpm run start
