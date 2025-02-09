@@ -53,9 +53,6 @@ importers:
       '@kui-shared/styles':
         specifier: 4.131.1
         version: 4.131.1
-      '@nv-brand-assets/react-marketing-icons':
-        specifier: ^2.0.0
-        version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
         specifier: 14.2.15
         version: 14.2.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -503,9 +500,6 @@ packages:
   '@nv-brand-assets/icons@2.2.5':
     resolution: {integrity: sha512-cuJOeakXupGOwyFjdpQFkUc8vO/ZrlQGM9KYdrQq7v88HJdf6WSgrOPpxbHa7+MwmTGSYxp/q/acE6FBkdPDNg==, tarball: https://urm.nvidia.com/artifactory/api/npm/sw-nvpubcloud-npm-local/@nv-brand-assets/icons/-/@nv-brand-assets/icons-2.2.5.tgz}
 
-  '@nv-brand-assets/marketing-icons@2.0.0':
-    resolution: {integrity: sha512-2agg0AFsfXVupv/7Rp0XwfGC0RhxZej1+xaqVBf1wpCXcd8NUJSd7RcwbzhQ7GQRBIXBOI3xLnEvOFqSKmc9ug==, tarball: https://urm.nvidia.com/artifactory/api/npm/sw-nvpubcloud-npm-local/@nv-brand-assets/marketing-icons/-/@nv-brand-assets/marketing-icons-2.0.0.tgz}
-
   '@nv-brand-assets/react-icons-inline@2.4.0':
     resolution: {integrity: sha512-Du2QHwx+o/pwgEBe/2WPJNygosJgOhJsEoTKmX8VAx0/fI/qu9n7LdHEvh86RJ94HDUDOeteAWaGfd2vsrKSkw==, tarball: https://urm.nvidia.com/artifactory/api/npm/sw-nvpubcloud-npm-local/@nv-brand-assets/react-icons-inline/-/@nv-brand-assets/react-icons-inline-2.4.0.tgz}
     peerDependencies:
@@ -514,12 +508,6 @@ packages:
 
   '@nv-brand-assets/react-icons@2.1.8':
     resolution: {integrity: sha512-dXeyKi8JgI1wvi/RP0c9lhmLnTiPZ2X9TJIzVbyZgEKGTiktt22A5KjK09e3P1UjnQq4vEnqPkE/sYOmIa2DRQ==, tarball: https://urm.nvidia.com/artifactory/api/npm/sw-nvpubcloud-npm-local/@nv-brand-assets/react-icons/-/@nv-brand-assets/react-icons-2.1.8.tgz}
-    peerDependencies:
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
-
-  '@nv-brand-assets/react-marketing-icons@2.0.0':
-    resolution: {integrity: sha512-Kl2DN6JEefDR3VSAABv1TQ32+0+6C9PvL+bTHheY9KJtlK4WnOTovebGXadbAfnHIuXwdgWvqsyfl5UfOB1Iug==, tarball: https://urm.nvidia.com/artifactory/api/npm/sw-nvpubcloud-npm-local/@nv-brand-assets/react-marketing-icons/-/@nv-brand-assets/react-marketing-icons-2.0.0.tgz}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0
       react-dom: ^17.0.0 || ^18.0.0
@@ -3398,8 +3386,6 @@ snapshots:
 
   '@nv-brand-assets/icons@2.2.5': {}
 
-  '@nv-brand-assets/marketing-icons@2.0.0': {}
-
   '@nv-brand-assets/react-icons-inline@2.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@nv-brand-assets/icons': 2.2.5
@@ -3409,13 +3395,6 @@ snapshots:
   '@nv-brand-assets/react-icons@2.1.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@nv-brand-assets/icons': 2.2.5
-      external-svg-loader: 1.7.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@nv-brand-assets/react-marketing-icons@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@nv-brand-assets/marketing-icons': 2.0.0
       external-svg-loader: 1.7.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

@@ -8,7 +8,7 @@ First run the Analytics backend as per the instructions provided in `holoscan-fe
 
 Run the analytics dashboard with the following command:
 ```bash
-cd visualization/frontend/
+cd visualization/frontend/analytics-dashboard
 
 # modify `NEXT_PUBLIC_ROOT_URI` variable in the `analytics-dashboard/.env` file to point to the IP where analytics backend is running.
 
