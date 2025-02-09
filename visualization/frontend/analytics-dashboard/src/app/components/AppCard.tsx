@@ -55,7 +55,7 @@ export default function AppCard({ title }: AppCardProps) {
         slotMedia={iconName ? 
             <Image width="200" height="150" src={`/images/${iconName}`} alt={title} >
             </Image> : 
-            <NvidiaMarketingIcon iconName="holoscan"  width="200px" height="150px"/>
+            <Image  src={`/images/holoscan.png`} alt={title} ></Image>
           }
         onClick={() => handleClick(title)}
         id={title}
