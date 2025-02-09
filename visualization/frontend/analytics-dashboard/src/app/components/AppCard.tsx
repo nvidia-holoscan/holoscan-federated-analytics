@@ -17,7 +17,6 @@
 'use client';
 import { Card} from "@kui-react/card";
 import { Flex } from "@kui-react/flex";
-import { NvidiaMarketingIcon } from "@nv-brand-assets/react-marketing-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AppNames, IconNames } from "../../../src/config";
@@ -55,7 +54,7 @@ export default function AppCard({ title }: AppCardProps) {
         slotMedia={iconName ? 
             <Image width="200" height="150" src={`/images/${iconName}`} alt={title} >
             </Image> : 
-            <Image  src={`/images/holoscan.png`} alt={title} ></Image>
+            <Image  height="150" src={`/images/holoscan.png`} alt={title} ></Image>
           }
         onClick={() => handleClick(title)}
         id={title}
