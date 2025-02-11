@@ -1,0 +1,41 @@
+name: Docker Image CI
+
+on:
+  push:
+    paths:
+      - 'applications/**'
+      - 'visualization/**'
+    branches: [ "main" ]
+  pull_request:
+    paths:
+      - 'applications/**'
+      - 'visualization/**'
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+    - uses: actions/checkout@v4
+      with:
+          submodules: true
+          fetch-depth: 0
+          
+    - name: Build NVFLARE App container
+      run: |
+        cd applications/holoscan_nvflare_app
+        ./dev_container build
+
+    - name: Build visualization backend container
+      run: |
+        cd visualization/backend
+        docker-compose build
+
+    - name: Build visualization frontend container
+      run: |
+        cd visualization/frontend/analytics-dashboard
+        docker-compose build
