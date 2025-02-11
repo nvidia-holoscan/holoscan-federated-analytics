@@ -28,6 +28,12 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 # COPY .npmrc .npmrc
 
+# Create .npmrc file for Kaizen UI repositories
+# TODO: Modify this to point to public repositories once available.
+RUN echo "@kui-react:registry=https://urm.nvidia.com/artifactory/api/npm/sw-ngc-cloud-npm-local/" >>.npmrc
+RUN echo "@kui-shared:registry=https://urm.nvidia.com/artifactory/api/npm/sw-ngc-cloud-npm-local/" >>.npmrc
+RUN echo "@nv-brand-assets:registry=https://urm.nvidia.com/artifactory/api/npm/sw-nvpubcloud-npm-local/" >>.npmrc
+
 # Install dependencies using pnpm
 RUN pnpm install
 
