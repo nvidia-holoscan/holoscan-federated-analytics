@@ -335,7 +335,7 @@ const StatsPage = ({ params }: { params: { app_name: string } }) => {
         }
       }
     })();
-  }, []);
+  }, [params.app_name]);
     
   useEffect(() => {
     fetchStats();
@@ -364,7 +364,7 @@ const StatsPage = ({ params }: { params: { app_name: string } }) => {
           }
         }
       })();
-    }, []);
+    }, [params.app_name, selectedDate]);
   
   useEffect(() => {
       fetchStatsList();
