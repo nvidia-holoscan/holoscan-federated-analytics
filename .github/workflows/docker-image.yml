@@ -33,9 +33,9 @@ jobs:
     - name: Build visualization backend container
       run: |
         cd visualization/backend
-        docker-compose build
+        docker compose build
 
     - name: Build visualization frontend container
       run: |
         cd visualization/frontend/analytics-dashboard
-        docker-compose build
+        docker compose build
