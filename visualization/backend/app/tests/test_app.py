@@ -17,11 +17,10 @@ import json
 from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
-from httpx import ASGITransport, AsyncClient
-
 from app.core.config import settings
 from app.main import app
 from create_test_token import create_token
+from httpx import ASGITransport, AsyncClient
 
 
 @pytest.fixture(scope="function")

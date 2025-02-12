@@ -18,8 +18,17 @@ from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 from nvflare.apis.fl_context import FLContext
-from nvflare.app_common.abstract.statistics_spec import BinRange, Feature, Histogram, HistogramType, Statistics
-from nvflare.app_common.statistics.numpy_utils import dtype_to_data_type, get_std_histogram_buckets
+from nvflare.app_common.abstract.statistics_spec import (
+    BinRange,
+    Feature,
+    Histogram,
+    HistogramType,
+    Statistics,
+)
+from nvflare.app_common.statistics.numpy_utils import (
+    dtype_to_data_type,
+    get_std_histogram_buckets,
+)
 from pandas.core.series import Series
 
 
@@ -39,7 +48,13 @@ class HoloscanExampleStatistics(Statistics):
             dfs = []
             # Iterate over all csv files in a data directory
             for csv_file in path.rglob("*.csv"):
-                df = pd.read_csv(csv_file, sep=r"\s*,\s*", skiprows=skip_rows, engine="python", na_values="?")
+                df = pd.read_csv(
+                    csv_file,
+                    sep=r"\s*,\s*",
+                    skiprows=skip_rows,
+                    engine="python",
+                    na_values="?",
+                )
                 dfs.append(df)
             # Combine all data frames
             if dfs:
@@ -97,7 +112,12 @@ class HoloscanExampleStatistics(Statistics):
         return df[feature_name].max()
 
     def histogram(
-        self, dataset_name: str, feature_name: str, num_of_bins: int, global_min_value: float, global_max_value: float
+        self,
+        dataset_name: str,
+        feature_name: str,
+        num_of_bins: int,
+        global_min_value: float,
+        global_max_value: float,
     ) -> Histogram:
 
         num_of_bins: int = num_of_bins
@@ -106,11 +126,17 @@ class HoloscanExampleStatistics(Statistics):
         feature: Series = df[feature_name]
         flattened = feature.ravel()
         flattened = flattened[flattened != np.array(None)]
-        buckets = get_std_histogram_buckets(flattened, num_of_bins, BinRange(global_min_value, global_max_value))
+        buckets = get_std_histogram_buckets(
+            flattened, num_of_bins, BinRange(global_min_value, global_max_value)
+        )
         return Histogram(HistogramType.STANDARD, buckets)
 
     def variance_with_mean(
-        self, dataset_name: str, feature_name: str, global_mean: float, global_count: float
+        self,
+        dataset_name: str,
+        feature_name: str,
+        global_mean: float,
+        global_count: float,
     ) -> float:
         df = self.data[dataset_name]
         tmp = (df[feature_name] - global_mean) * (df[feature_name] - global_mean)
