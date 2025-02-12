@@ -18,10 +18,9 @@ from math import sqrt
 from pathlib import Path
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
-
 from app.core.config import settings
 from app.utils.dependencies import validate_user
+from fastapi import APIRouter, Depends, HTTPException
 
 
 def accumulate_stats(dst_dict: dict, src_dict: dict):

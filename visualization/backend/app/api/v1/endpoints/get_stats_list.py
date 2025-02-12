@@ -15,10 +15,9 @@
 from pathlib import Path
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
-
 from app.core.config import settings
 from app.utils.dependencies import validate_user
+from fastapi import APIRouter, Depends, HTTPException
 
 
 def get_stats_directories(app_name: str) -> List[str]:
