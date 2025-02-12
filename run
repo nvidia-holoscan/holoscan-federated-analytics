@@ -1,0 +1,123 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/bin/bash
+set -eo pipefail
+
+VIRTUAL_ENV_DIR=".venv_temp"
+
+cleanup() {
+    if [ -d "$VIRTUAL_ENV_DIR" ]; then
+        echo "Cleaning up virtual environment..."
+        rm -rf "$VIRTUAL_ENV_DIR"
+    fi
+}
+
+create_venv() {
+    if ! command -v python3 &> /dev/null; then
+        echo "Error: python3 is required but not installed"
+        exit 1
+    fi
+
+    echo "Creating temporary virtual environment..."
+    python3 -m venv "$VIRTUAL_ENV_DIR"
+}
+
+install_deps() {
+    echo "Installing dependencies..."
+    "$VIRTUAL_ENV_DIR/bin/pip" install -q isort black ruff codespell
+}
+
+run_linters() {
+    local mode="$1"
+
+    # Initialize a variable to track the status of the tools
+    failed=0
+
+    echo "Running black ($mode mode)..."
+    if [ "$mode" == "fix" ]; then
+        "$VIRTUAL_ENV_DIR/bin/black" --exclude '/(\.git|\.venv|\.venv_temp|venv|env|visualization/frontend)/' . || failed=1
+    else
+        "$VIRTUAL_ENV_DIR/bin/black" --check --exclude '/(\.git|\.venv|\.venv_temp|venv|env|visualization/frontend)/' . || failed=1
+    fi
+
+    echo "Running isort ($mode mode)..."
+    if [ "$mode" == "fix" ]; then
+        "$VIRTUAL_ENV_DIR/bin/isort" --profile=black --skip '.venv_temp' --skip '.venv' --skip visualization/frontend . || failed=1
+    else
+        "$VIRTUAL_ENV_DIR/bin/isort" --profile=black --check-only --skip '.venv_temp' --skip '.venv' --skip visualization/frontend . || failed=1
+    fi
+
+    echo "Running ruff ($mode mode)..."
+    if [ "$mode" == "fix" ]; then
+        "$VIRTUAL_ENV_DIR/bin/ruff" check --fix . || failed=1
+    else
+        "$VIRTUAL_ENV_DIR/bin/ruff" check . || failed=1
+    fi
+
+    echo "Running codespell..."
+    "$VIRTUAL_ENV_DIR/bin/codespell" --skip .git,__pycache__,*.yml,3rdparty,"$VIRTUAL_ENV_DIR" | failed=1
+
+    if [ "$failed" -eq 1 ]; then
+        echo "Error: One or more checks failed."
+        exit 1
+    else
+        echo "Success!"
+        exit 0
+    fi
+
+}
+
+show_help() {
+    cat <<EOF
+Usage: $(basename "$0") [COMMAND]
+
+Commands:
+  lint        Run code quality checks (read-only mode)
+  fix         Run code quality checks and automatically fix issues
+  -h, --help  Show this help message
+
+The script creates a temporary virtual environment, runs the requested
+operations, then cleans up automatically.
+EOF
+}
+
+trap cleanup EXIT
+
+case "$1" in
+    lint)
+        create_venv
+        install_deps
+        run_linters "check"
+        ;;
+    fix)
+        create_venv
+        install_deps
+        run_linters "fix"
+        ;;
+    -h|--help)
+        show_help
+        ;;
+    *)
+        if [ -z "$1" ]; then
+            show_help
+        else
+            echo "Error: Invalid command '$1'"
+            show_help
+            exit 1
+        fi
+        ;;
+esac
