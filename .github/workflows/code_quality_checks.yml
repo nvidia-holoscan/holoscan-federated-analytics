@@ -19,5 +19,8 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Make script executable
+        run: chmod +x run.sh
+
       - name: Run code quality checks
         run: ./run.sh lint
