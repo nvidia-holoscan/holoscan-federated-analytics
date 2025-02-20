@@ -13,3 +13,5 @@ Refer to the README files in the subfolders for additional information.
 - [Holoscan Federated Analytics - Reference application](./applications/holoscan_nvflare_app/README.md)
 - [Visualization backend for Holoscan Federated Analytics](./visualization/backend/README.md)
 - [Visualization frontend for Holoscan Federated Analytics](./visualization/frontend/README.md)
+
+This project will download and install additional third-party open source software projects. Review the [license terms](./3rdparty/licenses/) of these open source projects before use.
