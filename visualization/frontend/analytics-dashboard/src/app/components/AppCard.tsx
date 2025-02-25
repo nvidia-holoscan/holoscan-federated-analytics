@@ -46,19 +46,19 @@ export default function AppCard({ title }: AppCardProps) {
         if (searchParams && pathName) {
             setIsReady(true);
         }
-    }, [searchParams, pathName]);  // Ensure that the router is ready before using it
+    }, [searchParams, pathName]);
 
     const iconName = IconNames.get(title);
 
     return <Card
         slotContent={<Flex justify="center"><h4 style={{textAlign: 'center', color: "white"}}>{AppNames.get(title)}</h4></Flex>}
-        slotMedia={iconName ? 
+        slotMedia={iconName ?
             <Image width="200" height="150" src={`/images/${iconName}`} alt={title} >
-            </Image> : 
-            <Image  height="150" src={`/images/holoscan.png`} alt={title} ></Image>
-          }
+            </Image> :
+            <Image height="150" width="150" src={`/images/holoscan.png`} alt={title} ></Image>
+        }
         onClick={() => handleClick(title)}
         id={title}
         css={{margin: 20, padding: "30px, 20px", width: 300, height: 250, color: "#76b900", cursor: 'pointer'}}
-     />
+    />
 }

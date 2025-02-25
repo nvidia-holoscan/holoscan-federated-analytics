@@ -27,7 +27,7 @@ const ThemeProvider = dynamic(
   }
 );
 
-export default function AppsPage() {
+const AppsPage = () => {
   const [data, setData] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,46 +35,46 @@ export default function AppsPage() {
   const fetchData = () => {
     (async () => {
       try {
-            const authorizationHeader = `Bearer ${process.env.NEXT_PUBLIC_AUTHPORIZATION_HEADER}`;
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URI}/get_apps/`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `${authorizationHeader}`,
-                'Content-Type': 'application/json'
-            }
+        const authorizationHeader = `Bearer ${process.env.NEXT_PUBLIC_AUTHPORIZATION_HEADER}`;
+        const res = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URI}/get_apps/`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `${authorizationHeader}`,
+            'Content-Type': 'application/json'
+          }
         });
         if (!res.ok) {
           throw new Error(`An error occurred while fetching the list of registered apps: ${res.statusText}`);
         }
         const result = await res.json();
-        setData(result);  // Store data in state
+        setData(result);
       } catch (err: unknown) {
         if (err instanceof Error){
-          setError((err as Error).message);  // Store error in state
+          setError((err as Error).message);
         }
       }
     })();
   };
-    
-    useEffect(() => {
+
+  useEffect(() => {
     fetchData();
   }, []);
-  
-  // Display loading, error or data
+
   return (
     <ThemeProvider theme="dark" withFonts withReset>
-      <div>
+      <div style={{ padding: '20px' }}>
         {error && <p>Error: {error}</p>}
         {!data && !error && <p>Loading...</p>}
         {data && (
-          <ul>
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
             {data.map(app => (
-              <AppCard title={app} key={app}></AppCard>
+              <AppCard title={app} key={app} />
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </ThemeProvider>
   );
-    
-}
+};
+
+export default AppsPage;
