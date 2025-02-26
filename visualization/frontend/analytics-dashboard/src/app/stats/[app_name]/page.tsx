@@ -254,7 +254,11 @@ const StatsPage = ({ params }: { params: { app_name: string } }) => {
             throw new Error(`An error occurred while fetching the stats for the given apps: ${res.statusText}`);
           }
           const result = await res.json();
-          setStatsList([selectedDate, ...result]);  // Store data in state
+          if (selectedDate == "Latest Statistics") {
+            setStatsList([selectedDate, ...result]);
+          } else {
+            setStatsList([...result, "Latest Statistics"]);
+          }
         } catch (err: unknown) {
           if (err instanceof Error) {
             setError((err as Error).message);  // Store error in state
