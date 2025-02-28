@@ -1,0 +1,33 @@
+{
+	"tutorial": {
+		"name": "NVIDIA Holoscan Federated Analytics Tutorial",
+		"description": "Tutorial walking you through the step-by-step process of enabling federated analytics for Holoscan applications.",
+		"authors": [
+			{
+				"name": "Arun Patole",
+				"affiliation": "NVIDIA"
+			}
+		],
+		"language": "Python",
+		"version": "0.1.0",
+		"changelog": {
+			"0.1.0": "Initial Release"
+		},
+		"holoscan_sdk": {
+			"minimum_required_version": "3.0.0",
+			"tested_versions": [
+				"3.0.0"
+			]
+		},
+		"platforms": [
+			"amd64",
+			"arm64"
+		],
+		"tags": [
+			"Holoscan",
+			"Federated Analytics"
+		],
+		"ranking": 1,
+		"dependencies": {}
+	}
+}

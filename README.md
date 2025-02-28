@@ -14,4 +14,6 @@ Refer to the README files in the subfolders for additional information.
 - [Visualization backend for Holoscan Federated Analytics](./visualization/backend/README.md)
 - [Visualization frontend for Holoscan Federated Analytics](./visualization/frontend/README.md)
 
+The [tutorial](./tutorial/README.md) also provides a comprehensive compilation of all relevant information in a single location.
+
 This project will download and install additional third-party open source software projects. Review the [license terms](./3rdparty/licenses/) of these open source projects before use.
