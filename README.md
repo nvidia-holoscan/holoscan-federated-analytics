@@ -16,4 +16,12 @@ Refer to the README files in the subfolders for additional information.
 
 The [tutorial](./tutorial/README.md) also provides a comprehensive compilation of all relevant information in a single location.
 
+## Licensing Information
+
+### Third-Party Licenses
 This project will download and install additional third-party open source software projects. Review the [license terms](./3rdparty/licenses/) of these open source projects before use.
+
+### NVIDIA License
+This project includes components that are licensed under the NVIDIA Software License Agreement. The full text of the NVIDIA license can be found at [LICENSE-NVIDIA.txt](./3rdparty/licenses/ui/frontend/kui/LICENSE-NVIDIA.txt). By using this software, you agree to comply with the terms and conditions outlined in the NVIDIA license agreement.
+
+**Note**: The NVIDIA license terms are proprietary and include specific restrictions on use, modification, and distribution. Please review the license carefully before using this software.
